@@ -1,0 +1,31 @@
+-- Quantifiers are greedy, or lazy with a ? after them
+::dependency nanyx.regex ./nanyx.regex
+
+import nanyx.regex/regex
+
+def re = { pattern ->
+  match Regex.parse(pattern)
+    | #some(r) -> r
+    | #invalidPattern(e) -> crash("{pattern}: {e.message}")
+}
+
+def show = { pattern, text ->
+  match text \Regex.find(re(pattern))
+    | #some(m) -> println("{m.text} {m.start}-{m.end}")
+    | #notFound -> println("none")
+}
+
+def bad = { pattern ->
+  match Regex.parse(pattern)
+    | #some(_) -> println("ok")
+    | #invalidPattern(e) -> println("{e.column}: {e.message}")
+}
+
+show('a*', "aaa")
+show('a*?', "aaa")
+show('a+', "baaa")
+show('a+?', "baaa")
+show('a?b', "ab")
+show('a??b', "ab")
+show('<.*>', "<a><b>")
+show('<.*?>', "<a><b>")

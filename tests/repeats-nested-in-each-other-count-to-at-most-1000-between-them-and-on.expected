@@ -1,0 +1,8 @@
+true
+false
+10: Repeats nested in each other can count to at most 1000 between them, and these count to 1010
+17: Repeats nested in each other can count to at most 1000 between them, and these count to 1004
+10: Repeats nested in each other can count to at most 1000 between them, and these count to 1002
+11: Repeats nested in each other can count to at most 1000 between them, and these count to 1005
+(?:(?:a{2}){2}){250}
+(?:a*){1000}

@@ -1,0 +1,40 @@
+-- Groups capture by number and by name, and a group that took no part is none
+::dependency nanyx.regex ./nanyx.regex
+
+import nanyx.regex/regex
+
+def re = { pattern ->
+  match Regex.parse(pattern)
+    | #some(r) -> r
+    | #invalidPattern(e) -> crash("{pattern}: {e.message}")
+}
+
+def show = { pattern, text ->
+  match text \Regex.find(re(pattern))
+    | #some(m) -> println("{m.text} {m.start}-{m.end}")
+    | #notFound -> println("none")
+}
+
+def bad = { pattern ->
+  match Regex.parse(pattern)
+    | #some(_) -> println("ok")
+    | #invalidPattern(e) -> println("{e.column}: {e.message}")
+}
+
+match "x 10-20 y" \Regex.find(re('(\d+)-(?<high>\d+)'))
+  | #some(m) -> println(
+    "{m \group(0)} {m \group(1)} {m \group(2)} {m \named("high")} {m \group(3)} {m \named("low")}"
+  )
+  | #notFound -> println("none")
+
+match "b" \Regex.find(re('(a)|(b)'))
+  | #some(m) -> println("{m \group(1)} {m \group(2)}")
+  | #notFound -> println("none")
+
+match "abcd" \Regex.find(re('(a|ab)(c|bcd)(d*)'))
+  | #some(m) -> println("{m \group(1)} {m \group(2)} {m \group(3)}")
+  | #notFound -> println("none")
+
+match "2024" \Regex.find(re('(?P<year>\d{4})'))
+  | #some(m) -> println("{m \named("year")}")
+  | #notFound -> println("none")

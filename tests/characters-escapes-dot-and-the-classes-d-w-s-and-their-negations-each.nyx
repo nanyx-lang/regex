@@ -1,0 +1,34 @@
+-- Characters, escapes, dot and the classes \d \w \s and their negations each match what they stand for
+::dependency nanyx.regex ./nanyx.regex
+
+import nanyx.regex/regex
+
+def re = { pattern ->
+  match Regex.parse(pattern)
+    | #some(r) -> r
+    | #invalidPattern(e) -> crash("{pattern}: {e.message}")
+}
+
+def show = { pattern, text ->
+  match text \Regex.find(re(pattern))
+    | #some(m) -> println("{m.text} {m.start}-{m.end}")
+    | #notFound -> println("none")
+}
+
+def bad = { pattern ->
+  match Regex.parse(pattern)
+    | #some(_) -> println("ok")
+    | #invalidPattern(e) -> println("{e.column}: {e.message}")
+}
+
+show('a.c', "xabc")
+show('a.c', "a\nc")
+show('\.\*\+', "a.*+")
+println("x\t\n" \Regex.find(re('\t\n')) \mapSome { m -> "{m.start}-{m.end}" })
+show('\x41\x{263A}', "A☺")
+show('\d+', "ab 123")
+show('\D+', "12ab3")
+show('\w+', "  foo_1 ")
+show('\W+', "ab, cd")
+println("a \t b" \Regex.find(re('\s+')) \mapSome { m -> "{m.start}-{m.end}" })
+show('\S+', "  ab ")

@@ -1,0 +1,43 @@
+-- Nested + and * are loops, so their program grows by one copy at each level and they compile and match
+-- A `+` is its copy and a split back, and a `*` a split, its copy and a jump: a program no larger however they
+-- nest (#2593). The size a pattern compiles to shows past the cap, whose error says it.
+::dependency nanyx.regex ./nanyx.regex
+
+import nanyx.regex/regex
+
+def re = { pattern ->
+  match Regex.parse(pattern)
+    | #some(r) -> r
+    | #invalidPattern(e) -> crash("{pattern}: {e.message}")
+}
+
+def show = { pattern, text ->
+  match text \Regex.find(re(pattern))
+    | #some(m) -> println("{m.text} {m.start}-{m.end}")
+    | #notFound -> println("none")
+}
+
+def bad = { pattern ->
+  match Regex.parse(pattern)
+    | #some(_) -> println("ok")
+    | #invalidPattern(e) -> println("{e.column}: {e.message}")
+}
+
+def nested = { n, open, inner, close -> string.repeat(open, n) ++ inner ++ string.repeat(close, n) }
+
+def body = string.repeat("a", 100000)
+
+for [25, 50] | n ->
+  bad(nested(n, "(?:", body, ")+"))
+  bad(nested(n, "(?:", body, ")*"))
+
+for [
+  nested(25, "(?:", "a", ")+")
+  nested(70, "(?:", "a+", ")*")
+  nested(1000, "(?:a|", "b", ")+")
+] | pattern ->
+  println("xaab" \Regex.find(re(pattern)) \mapSome { m -> "{m.start}-{m.end}" })
+
+show('a+?', "aaa")
+show('(a+)+b', "aaab")
+show('x(a|ab)+y', "xababay")

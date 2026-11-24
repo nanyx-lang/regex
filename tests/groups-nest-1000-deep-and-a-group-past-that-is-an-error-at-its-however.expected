@@ -1,0 +1,8 @@
+#some(1-2)
+#some(0-0)
+#some(1-2)
+1001: Groups can be nested at most 1000 deep
+1007: Groups can be nested at most 1000 deep
+1001: Groups can be nested at most 1000 deep
+2000: There is no '(' for this ')' to close
+1: There is no ')' to close this '('

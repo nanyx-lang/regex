@@ -1,0 +1,36 @@
+-- #Matches matches a string against a literal pattern in a match arm, with and without the match
+::dependency nanyx.regex ./nanyx.regex
+
+import nanyx.regex/regex
+
+def re = { pattern ->
+  match Regex.parse(pattern)
+    | #some(r) -> r
+    | #invalidPattern(e) -> crash("{pattern}: {e.message}")
+}
+
+def show = { pattern, text ->
+  match text \Regex.find(re(pattern))
+    | #some(m) -> println("{m.text} {m.start}-{m.end}")
+    | #notFound -> println("none")
+}
+
+def bad = { pattern ->
+  match Regex.parse(pattern)
+    | #some(_) -> println("ok")
+    | #invalidPattern(e) -> println("{e.column}: {e.message}")
+}
+
+def classify = { (line: string) ->
+  match line
+    | #Matches('^\s*$') -> "blank"
+    | #Matches('^(\d+)-(\d+)$')(m) -> "range {m \group(1) \someOr("")} to {m \group(2) \someOr("")}"
+    | #Matches('(?i)^todo:\s*(?<task>.*)$')(m) -> "task {m \named("task") \someOr("")}"
+    | _ -> "other"
+}
+
+println(classify("   "))
+println(classify("10-20"))
+println(classify("TODO: write tests"))
+println(classify("10-"))
+println(if "abc" is #Matches('b') then "has a b" else "no b")
