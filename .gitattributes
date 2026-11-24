@@ -1,0 +1,4 @@
+# Check out text files with LF line endings everywhere, so that a package packed on Windows has the same bytes as
+# one packed elsewhere.
+* text=auto eol=lf
+*.nyxpkg binary

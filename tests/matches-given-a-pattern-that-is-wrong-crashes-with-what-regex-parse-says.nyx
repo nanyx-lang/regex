@@ -1,0 +1,8 @@
+-- #Matches given a pattern that is wrong crashes with what Regex.parse says of it
+::dependency nanyx.regex ./nanyx.regex
+
+import nanyx.regex/regex
+
+match "x"
+  | #Matches('(\d+') -> println("matched")
+  | _ -> println("no match")

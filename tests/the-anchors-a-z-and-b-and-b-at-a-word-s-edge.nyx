@@ -1,0 +1,32 @@
+-- The anchors ^ $ \A \z, and \b and \B at a word's edge
+::dependency nanyx.regex ./nanyx.regex
+
+import nanyx.regex/regex
+
+def re = { pattern ->
+  match Regex.parse(pattern)
+    | #some(r) -> r
+    | #invalidPattern(e) -> crash("{pattern}: {e.message}")
+}
+
+def show = { pattern, text ->
+  match text \Regex.find(re(pattern))
+    | #some(m) -> println("{m.text} {m.start}-{m.end}")
+    | #notFound -> println("none")
+}
+
+def bad = { pattern ->
+  match Regex.parse(pattern)
+    | #some(_) -> println("ok")
+    | #invalidPattern(e) -> println("{e.column}: {e.message}")
+}
+
+show('^abc', "abc")
+show('^abc', "xabc")
+show('abc$', "xabc")
+show('abc$', "abc\n")
+show('\Aab', "ab")
+show('ab\z', "ab")
+show('\bfoo\b', "a foo b")
+show('\bfoo\b', "afoob")
+show('\Boo\B', "afoob")

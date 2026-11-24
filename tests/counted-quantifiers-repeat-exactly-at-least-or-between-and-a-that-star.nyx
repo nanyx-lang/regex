@@ -1,0 +1,30 @@
+-- Counted quantifiers repeat exactly, at least, or between, and a { that starts none is a character
+::dependency nanyx.regex ./nanyx.regex
+
+import nanyx.regex/regex
+
+def re = { pattern ->
+  match Regex.parse(pattern)
+    | #some(r) -> r
+    | #invalidPattern(e) -> crash("{pattern}: {e.message}")
+}
+
+def show = { pattern, text ->
+  match text \Regex.find(re(pattern))
+    | #some(m) -> println("{m.text} {m.start}-{m.end}")
+    | #notFound -> println("none")
+}
+
+def bad = { pattern ->
+  match Regex.parse(pattern)
+    | #some(_) -> println("ok")
+    | #invalidPattern(e) -> println("{e.column}: {e.message}")
+}
+
+show('a{2}', "aaaa")
+show('a{2,}', "aaaaa")
+show('a{2,3}', "aaaaa")
+show('a{2,3}?', "aaaaa")
+show('(ab){0,2}c', "abababc")
+show('a{,3}', 'a{,3}')
+show('x{', 'x{')
