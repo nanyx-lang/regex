@@ -1,0 +1,40 @@
+-- IsMatch, findAll, replace, replaceWith and split, each taking the text first
+::dependency nanyx.regex ./nanyx.regex
+
+import nanyx.regex/regex
+
+def re = { pattern ->
+  match Regex.parse(pattern)
+    | #some(r) -> r
+    | #invalidPattern(e) -> crash("{pattern}: {e.message}")
+}
+
+def show = { pattern, text ->
+  match text \Regex.find(re(pattern))
+    | #some(m) -> println("{m.text} {m.start}-{m.end}")
+    | #notFound -> println("none")
+}
+
+def bad = { pattern ->
+  match Regex.parse(pattern)
+    | #some(_) -> println("ok")
+    | #invalidPattern(e) -> println("{e.column}: {e.message}")
+}
+
+def digits = re('[0-9]+')
+
+println("abc123" \Regex.isMatch(digits))
+println("abc" \Regex.isMatch(digits))
+println("a1b22" \Regex.findAll(digits) \seq.map { m -> m.text } \seq.toList)
+println("baaac" \Regex.findAll(re('a*')) \seq.map { m -> "{m.start}-{m.end}" } \seq.toList)
+println("a1b22" \Regex.replace(digits, with = "#"))
+
+println(
+  "2024-11-17" \Regex.replace(re('(\d+)-(\d+)-(?<day>\d+)'), with = '${day}/$2/$1 $$ $0 [$9]')
+)
+
+println("a1b22" \Regex.replaceWith(re('\d'), { m -> "<{m.text}>" }))
+println("a,b;c" \Regex.split(re('[,;]')))
+println("abc" \Regex.split(re('')))
+println(",a," \Regex.split(re(',')) \list.map { piece -> "'{piece}'" })
+println(digits)

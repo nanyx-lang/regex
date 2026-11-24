@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Build and test with compiler 0.39.0
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # The compiler's releases are tagged compiler/<version> in nanyx-lang/nanyx, beside the VS Code extension's.
+      # The package is built and its formatting checked with the compiler it is written for.
+      - name: Download the compiler
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NANYX_VERSION: 0.39.0
+        run: |
+          mkdir -p "$RUNNER_TEMP/nanyx"
+          gh release download "compiler/$NANYX_VERSION" --repo nanyx-lang/nanyx \
+            --pattern "nanyx-$NANYX_VERSION-linux-x64.tar.gz" --output "$RUNNER_TEMP/nanyx.tar.gz"
+          tar -xzf "$RUNNER_TEMP/nanyx.tar.gz" -C "$RUNNER_TEMP/nanyx"
+          echo "$RUNNER_TEMP/nanyx" >> "$GITHUB_PATH"
+
+      - name: Check the package
+        run: |
+          nanyx --version
+          nanyx check .
+
+      - name: Check the formatting
+        run: nanyx format --check src tests
+
+      - name: Run the tests
+        run: tests/run.sh
+
+      - name: Pack the package
+        run: nanyx pack .

@@ -1,0 +1,31 @@
+-- Repeats nested in each other count to at most 1000 between them, and one past it is an error at its quantifier
+::dependency nanyx.regex ./nanyx.regex
+
+import nanyx.regex/regex
+
+def re = { pattern ->
+  match Regex.parse(pattern)
+    | #some(r) -> r
+    | #invalidPattern(e) -> crash("{pattern}: {e.message}")
+}
+
+def show = { pattern, text ->
+  match text \Regex.find(re(pattern))
+    | #some(m) -> println("{m.text} {m.start}-{m.end}")
+    | #notFound -> println("none")
+}
+
+def bad = { pattern ->
+  match Regex.parse(pattern)
+    | #some(_) -> println("ok")
+    | #invalidPattern(e) -> println("{e.column}: {e.message}")
+}
+
+println(string.repeat("a", 1000) \Regex.isMatch(re('^(?:a{10}){100}$')))
+println(string.repeat("a", 999) \Regex.isMatch(re('^(?:a{10}){100}$')))
+bad('(?:a{10}){101}')
+bad('x(?:(?:a{2}){2}){251}')
+bad('(?:a{2,}){501}')
+bad('(?:a{2,5}){201}')
+println(re('(?:(?:a{2}){2}){250}') \Regex.toString)
+println(re('(?:a*){1000}') \Regex.toString)

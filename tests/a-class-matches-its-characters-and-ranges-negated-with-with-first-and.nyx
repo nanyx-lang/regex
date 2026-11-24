@@ -1,0 +1,30 @@
+-- A class matches its characters and ranges, negated with ^, with ] first and - last as characters
+::dependency nanyx.regex ./nanyx.regex
+
+import nanyx.regex/regex
+
+def re = { pattern ->
+  match Regex.parse(pattern)
+    | #some(r) -> r
+    | #invalidPattern(e) -> crash("{pattern}: {e.message}")
+}
+
+def show = { pattern, text ->
+  match text \Regex.find(re(pattern))
+    | #some(m) -> println("{m.text} {m.start}-{m.end}")
+    | #notFound -> println("none")
+}
+
+def bad = { pattern ->
+  match Regex.parse(pattern)
+    | #some(_) -> println("ok")
+    | #invalidPattern(e) -> println("{e.column}: {e.message}")
+}
+
+show('[a-c]+', "xxbcaz")
+show('[^a-c]+', "abxyzc")
+show('[]a]+', "x]a]")
+show('[a-]+', "x-a-")
+show('[\d.]+', "v1.25!")
+show('[[:alpha:]]+', "12abC3")
+show('[[:digit:][:space:]]+', "ab1 2c")

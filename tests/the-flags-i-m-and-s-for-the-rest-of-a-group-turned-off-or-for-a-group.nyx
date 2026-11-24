@@ -1,0 +1,34 @@
+-- The flags i, m and s, for the rest of a group, turned off, or for a group of their own
+::dependency nanyx.regex ./nanyx.regex
+
+import nanyx.regex/regex
+
+def re = { pattern ->
+  match Regex.parse(pattern)
+    | #some(r) -> r
+    | #invalidPattern(e) -> crash("{pattern}: {e.message}")
+}
+
+def show = { pattern, text ->
+  match text \Regex.find(re(pattern))
+    | #some(m) -> println("{m.text} {m.start}-{m.end}")
+    | #notFound -> println("none")
+}
+
+def bad = { pattern ->
+  match Regex.parse(pattern)
+    | #some(_) -> println("ok")
+    | #invalidPattern(e) -> println("{e.column}: {e.message}")
+}
+
+show('(?i)hello', "HeLLo")
+show('(?i)[a-c]+', "xABCa")
+show('(?i)é', "É")
+show('(?i)σ', "Σ")
+show('(?i:a)b', "Ab")
+show('(?i:a)b', "AB")
+show('(?i)a(?-i)b', "AB")
+show('(?m)^b', "a\nb")
+show('(?m)a$', "a\nb")
+show('(?s)a.c', "a\nc")
+show('(?is)A.C', "a\nc")

@@ -1,0 +1,17 @@
+1: There is no ')' to close this '('
+2: There is no '(' for this ')' to close
+1: There is no ']' to close this '['
+3: The range 'z-a' goes backwards
+4: A range in a class goes from one character to another
+1: There is nothing before '*' to repeat
+3: A quantifier can't follow another quantifier
+2: A count can be at most 1000
+2: The least count, 3, is more than the most, 2
+2: The pattern ends with a '\' that escapes nothing
+1: '\q' is not an escape
+1: '\x' needs two hexadecimal digits, or some in braces
+2: '\b' matches a place, not a character, so it can't be in a class
+3: 'x' is not a flag: the flags are 'i', 'm' and 's'
+2: 'nope' is not a POSIX class
+1: A group's name is letters, digits and '_', between '<' and '>'
+13: Two groups are named 'year'

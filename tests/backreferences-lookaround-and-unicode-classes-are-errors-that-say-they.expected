@@ -1,0 +1,8 @@
+4: Backreferences such as '\1' aren't supported: matching takes linear time
+8: Backreferences such as '\k' aren't supported: matching takes linear time
+9: Backreferences such as '(?P=' aren't supported: matching takes linear time
+2: Lookaround such as '(?=' isn't supported: matching takes linear time
+2: Lookaround such as '(?!' isn't supported: matching takes linear time
+1: Lookaround such as '(?<=' isn't supported: matching takes linear time
+1: Lookaround such as '(?<!' isn't supported: matching takes linear time
+1: Unicode classes such as '\p' aren't supported
