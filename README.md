@@ -16,13 +16,13 @@ That adds `(package = "nanyx.regex", version = "0.1")` to the manifest's `depend
 `nanyx.lock` and downloads it. A script names it in a `::dependency` line instead:
 
 ```nanyx
-::dependency nanyx.regex 0.1.0
+::dependency nanyx.regex 0.1.1
 ```
 
 ## Use
 
 ```nanyx
-::dependency nanyx.regex 0.1.0
+::dependency nanyx.regex 0.1.1
 
 import nanyx.regex/regex
 
