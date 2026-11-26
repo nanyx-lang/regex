@@ -1,5 +1,5 @@
 -- Characters, escapes, dot and the classes \d \w \s and their negations each match what they stand for
-::dependency nanyx.regex ./nanyx.regex
+::install nanyx.regex ./nanyx.regex
 
 import nanyx.regex/regex
 

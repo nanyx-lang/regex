@@ -1,5 +1,5 @@
 -- A class matches its characters and ranges, negated with ^, with ] first and - last as characters
-::dependency nanyx.regex ./nanyx.regex
+::install nanyx.regex ./nanyx.regex
 
 import nanyx.regex/regex
 

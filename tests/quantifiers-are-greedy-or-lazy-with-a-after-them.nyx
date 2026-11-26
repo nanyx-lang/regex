@@ -1,5 +1,5 @@
 -- Quantifiers are greedy, or lazy with a ? after them
-::dependency nanyx.regex ./nanyx.regex
+::install nanyx.regex ./nanyx.regex
 
 import nanyx.regex/regex
 

@@ -1,5 +1,5 @@
 -- Groups capture by number and by name, and a group that took no part is none
-::dependency nanyx.regex ./nanyx.regex
+::install nanyx.regex ./nanyx.regex
 
 import nanyx.regex/regex
 

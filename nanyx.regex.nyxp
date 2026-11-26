@@ -1,8 +1,9 @@
 (
   package = (
     name = "nanyx.regex"
-    version = "0.1.1"
-    sources = ["src/**/*.nyx"]
+    version = "0.1.2"
     repository = "nanyx-lang/regex"
+    nanyx = "0.43"
+    sources = ["src/**/*.nyx"]
   )
 )

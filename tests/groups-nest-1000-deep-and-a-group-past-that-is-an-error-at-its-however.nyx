@@ -1,7 +1,7 @@
 -- Groups nest 1000 deep, and a group past that is an error at its '(', however deep the pattern goes
 -- A pattern taken from input can't run the program out of stack (#2584): reading a group takes no stack, and
 -- compiling and matching the deepest pattern allowed fit in it.
-::dependency nanyx.regex ./nanyx.regex
+::install nanyx.regex ./nanyx.regex
 
 import nanyx.regex/regex
 

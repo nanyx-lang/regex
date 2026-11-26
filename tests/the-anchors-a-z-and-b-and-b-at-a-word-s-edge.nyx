@@ -1,5 +1,5 @@
 -- The anchors ^ $ \A \z, and \b and \B at a word's edge
-::dependency nanyx.regex ./nanyx.regex
+::install nanyx.regex ./nanyx.regex
 
 import nanyx.regex/regex
 

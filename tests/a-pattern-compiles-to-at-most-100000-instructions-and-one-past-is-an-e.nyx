@@ -1,5 +1,5 @@
 -- A pattern compiles to at most 100000 instructions, and one past is an error
-::dependency nanyx.regex ./nanyx.regex
+::install nanyx.regex ./nanyx.regex
 
 import nanyx.regex/regex
 
