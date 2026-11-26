@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   test:
-    name: Build and test with compiler 0.43.0
+    name: Build and test with compiler 0.44.0
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,7 +21,7 @@ jobs:
       - name: Download the compiler
         env:
           GH_TOKEN: ${{ github.token }}
-          NANYX_VERSION: 0.43.0
+          NANYX_VERSION: 0.44.0
         run: |
           mkdir -p "$RUNNER_TEMP/nanyx"
           gh release download "compiler/$NANYX_VERSION" --repo nanyx-lang/nanyx \
@@ -42,3 +42,39 @@ jobs:
 
       - name: Pack the package
         run: nanyx pack .
+
+  # A merge to main whose manifest names a version that has no release yet publishes it: `nanyx publish` checks it
+  # again, packs it and creates the release v<version>, which the package index's sync records. Any other merge, whose
+  # version is already released, publishes nothing. So bumping the version is releasing it.
+  publish:
+    name: Publish the manifest's version
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download the compiler
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NANYX_VERSION: 0.44.0
+        run: |
+          mkdir -p "$RUNNER_TEMP/nanyx"
+          gh release download "compiler/$NANYX_VERSION" --repo nanyx-lang/nanyx \
+            --pattern "nanyx-$NANYX_VERSION-linux-x64.tar.gz" --output "$RUNNER_TEMP/nanyx.tar.gz"
+          tar -xzf "$RUNNER_TEMP/nanyx.tar.gz" -C "$RUNNER_TEMP/nanyx"
+          echo "$RUNNER_TEMP/nanyx" >> "$GITHUB_PATH"
+
+      - name: Publish the version unless it is released
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          version=$(nanyx manifest --json . | jq -r .package.version)
+          if gh api "repos/$GITHUB_REPOSITORY/releases/tags/v$version" --silent 2>/dev/null; then
+            echo "v$version is already released: nothing to publish"
+          else
+            nanyx publish .
+          fi
