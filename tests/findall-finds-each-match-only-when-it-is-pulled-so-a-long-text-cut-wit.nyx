@@ -1,5 +1,5 @@
 -- FindAll finds each match only when it is pulled, so a long text cut with seq.take is quick
-::dependency nanyx.regex ./nanyx.regex
+::install nanyx.regex ./nanyx.regex
 
 import nanyx.regex/regex
 

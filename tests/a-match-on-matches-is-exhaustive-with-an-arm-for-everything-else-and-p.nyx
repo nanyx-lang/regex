@@ -1,5 +1,5 @@
 -- A match on #Matches is exhaustive with an arm for everything else, and pattern arms mix with literals
-::dependency nanyx.regex ./nanyx.regex
+::install nanyx.regex ./nanyx.regex
 
 import nanyx.regex/regex
 

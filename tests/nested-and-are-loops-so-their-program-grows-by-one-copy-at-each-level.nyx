@@ -1,7 +1,7 @@
 -- Nested + and * are loops, so their program grows by one copy at each level and they compile and match
 -- A `+` is its copy and a split back, and a `*` a split, its copy and a jump: a program no larger however they
 -- nest (#2593). The size a pattern compiles to shows past the cap, whose error says it.
-::dependency nanyx.regex ./nanyx.regex
+::install nanyx.regex ./nanyx.regex
 
 import nanyx.regex/regex
 

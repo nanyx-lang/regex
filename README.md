@@ -13,16 +13,16 @@ nanyx install nanyx.regex
 ```
 
 That adds `(package = "nanyx.regex", version = "0.1")` to the manifest's `dependencies`, locks the version in
-`nanyx.lock` and downloads it. A script names it in a `::dependency` line instead:
+`nanyx.lock` and downloads it. A script names it in an `::install` line instead:
 
 ```nanyx
-::dependency nanyx.regex 0.1.1
+::install nanyx.regex 0.1.2
 ```
 
 ## Use
 
 ```nanyx
-::dependency nanyx.regex 0.1.1
+::install nanyx.regex 0.1.2
 
 import nanyx.regex/regex
 
@@ -119,6 +119,6 @@ tests/run.sh                 # with nanyx on the PATH
 NANYX=path/to/nanyx tests/run.sh
 ```
 
-CI builds and tests the package with the compiler release its workflow names, 0.39.0. To release, set the manifest's
+CI builds and tests the package with the compiler release its workflow names, 0.43.0. To release, set the manifest's
 `version` (or run `nanyx bump`) and run `nanyx publish`, which creates the GitHub release with the `.nyxpkg` and
 registers the version with the [package index](https://github.com/nanyx-lang/packages).

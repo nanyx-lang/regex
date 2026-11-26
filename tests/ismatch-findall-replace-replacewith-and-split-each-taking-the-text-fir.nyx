@@ -1,5 +1,5 @@
 -- IsMatch, findAll, replace, replaceWith and split, each taking the text first
-::dependency nanyx.regex ./nanyx.regex
+::install nanyx.regex ./nanyx.regex
 
 import nanyx.regex/regex
 

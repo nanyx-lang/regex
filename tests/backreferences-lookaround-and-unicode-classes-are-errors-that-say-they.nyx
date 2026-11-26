@@ -1,5 +1,5 @@
 -- Backreferences, lookaround and Unicode classes are errors that say they are not supported
-::dependency nanyx.regex ./nanyx.regex
+::install nanyx.regex ./nanyx.regex
 
 import nanyx.regex/regex
 

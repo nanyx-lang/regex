@@ -1,5 +1,5 @@
 -- A pattern that is wrong is an error that says where and why
-::dependency nanyx.regex ./nanyx.regex
+::install nanyx.regex ./nanyx.regex
 
 import nanyx.regex/regex
 

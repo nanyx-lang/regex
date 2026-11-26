@@ -1,5 +1,5 @@
 -- A pattern that takes a backtracking engine exponential time takes linear time
-::dependency nanyx.regex ./nanyx.regex
+::install nanyx.regex ./nanyx.regex
 
 import nanyx.regex/regex
 

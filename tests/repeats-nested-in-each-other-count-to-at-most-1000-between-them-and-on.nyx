@@ -1,5 +1,5 @@
 -- Repeats nested in each other count to at most 1000 between them, and one past it is an error at its quantifier
-::dependency nanyx.regex ./nanyx.regex
+::install nanyx.regex ./nanyx.regex
 
 import nanyx.regex/regex
 

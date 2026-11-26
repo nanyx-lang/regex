@@ -3,7 +3,7 @@
 # Give the compiler to use as NANYX (default: `nanyx` on the PATH).
 #
 # A script in the package's own directory would be one of its files, so the tests run from a temporary directory
-# that holds a copy of the package, `nanyx.regex`, beside them: each names it with `::dependency nanyx.regex ./nanyx.regex`.
+# that holds a copy of the package, `nanyx.regex`, beside them: each names it with `::install nanyx.regex ./nanyx.regex`.
 #
 # A script should exit with 0, or with the code in its `.exitcode` file if it has one. A script that should crash prints
 # where the crash came from after the message, by the lines of the package's sources, so only the first lines of its

@@ -1,5 +1,5 @@
 -- Counted quantifiers repeat exactly, at least, or between, and a { that starts none is a character
-::dependency nanyx.regex ./nanyx.regex
+::install nanyx.regex ./nanyx.regex
 
 import nanyx.regex/regex
 

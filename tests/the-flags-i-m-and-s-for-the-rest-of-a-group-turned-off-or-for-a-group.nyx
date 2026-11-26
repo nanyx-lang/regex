@@ -1,5 +1,5 @@
 -- The flags i, m and s, for the rest of a group, turned off, or for a group of their own
-::dependency nanyx.regex ./nanyx.regex
+::install nanyx.regex ./nanyx.regex
 
 import nanyx.regex/regex
 

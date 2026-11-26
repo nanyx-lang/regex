@@ -1,5 +1,5 @@
 -- Text is matched by code point, and start and end count code points
-::dependency nanyx.regex ./nanyx.regex
+::install nanyx.regex ./nanyx.regex
 
 import nanyx.regex/regex
 
